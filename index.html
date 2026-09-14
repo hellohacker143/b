@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Simple Google Sheet Form</title>
+    <title>Contact Form</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f2f4f7;
+            background: #f1f5f9;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,176 +23,253 @@
             padding: 20px;
         }
 
-        .form-container {
+        .container {
             width: 100%;
             max-width: 450px;
-            background: white;
+            background: #ffffff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
         }
 
-        h2 {
+        h1 {
             text-align: center;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
             margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #374151;
         }
 
         input,
         textarea {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 7px;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
             font-size: 15px;
-        }
-
-        textarea {
-            height: 100px;
-            resize: vertical;
+            outline: none;
+            transition: 0.2s;
         }
 
         input:focus,
         textarea:focus {
-            outline: none;
-            border-color: #333;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
         }
 
         button {
             width: 100%;
-            padding: 13px;
+            padding: 14px;
             border: none;
-            border-radius: 7px;
-            background: #111;
+            border-radius: 8px;
+            background: #2563eb;
             color: white;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         button:hover {
-            background: #333;
+            background: #1d4ed8;
         }
 
         button:disabled {
-            background: #999;
+            background: #94a3b8;
             cursor: not-allowed;
         }
 
-        #message {
+        #status {
             text-align: center;
             margin-top: 18px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
         }
 
         .success {
-            color: green;
+            color: #16a34a;
         }
 
         .error {
-            color: red;
+            color: #dc2626;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 22px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="form-container">
+    <div class="container">
 
-    <h2>Contact Form</h2>
+        <h1>Contact Form</h1>
 
-    <form id="contactForm">
+        <p class="subtitle">
+            Fill in the details and click Submit
+        </p>
 
-        <label>Name</label>
-        <input
-            type="text"
-            id="name"
-            placeholder="Enter your name"
-            required
-        >
+        <form id="contactForm">
 
-        <label>Phone</label>
-        <input
-            type="tel"
-            id="phone"
-            placeholder="Enter phone number"
-            required
-        >
+            <div class="form-group">
+                <label for="name">Name</label>
 
-        <label>Email</label>
-        <input
-            type="email"
-            id="email"
-            placeholder="Enter email"
-            required
-        >
-
-        <label>Message</label>
-        <textarea
-            id="userMessage"
-            placeholder="Enter your message"
-            required
-        ></textarea>
-
-        <button type="submit" id="submitBtn">
-            Submit
-        </button>
-
-    </form>
-
-    <div id="message"></div>
-
-</div>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                >
+            </div>
 
 
-<script>
+            <div class="form-group">
+                <label for="phone">Phone</label>
 
-    // =========================================
-    // PUT YOUR GOOGLE APPS SCRIPT URL HERE
-    // =========================================
-
-    const GOOGLE_SCRIPT_URL =
-        "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
-
-
-    // =========================================
-    // FORM SUBMIT
-    // =========================================
-
-    document
-        .getElementById("contactForm")
-        .addEventListener("submit", function(event) {
-
-            event.preventDefault();
-
-            const submitBtn =
-                document.getElementById("submitBtn");
-
-            const message =
-                document.getElementById("message");
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    required
+                >
+            </div>
 
 
-            // Get form values
+            <div class="form-group">
+                <label for="email">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="userMessage">Message</label>
+
+                <textarea
+                    id="userMessage"
+                    name="message"
+                    placeholder="Enter your message"
+                    required
+                ></textarea>
+            </div>
+
+
+            <button type="submit" id="submitBtn">
+                Submit
+            </button>
+
+        </form>
+
+
+        <div id="status"></div>
+
+    </div>
+
+
+    <script>
+
+        // ==========================================
+        // GOOGLE APPS SCRIPT WEB APP
+        // ==========================================
+
+        const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyohP7_BrExXyxlhm952mdTUQbVmWRuLa3LNO-xqYVqU-NuU26zTa-PWflrUpgSl8DM/exec";
+
+
+        // ==========================================
+        // FORM
+        // ==========================================
+
+        const form =
+            document.getElementById("contactForm");
+
+        const submitBtn =
+            document.getElementById("submitBtn");
+
+        const status =
+            document.getElementById("status");
+
+
+        // ==========================================
+        // SUBMIT
+        // ==========================================
+
+        form.addEventListener("submit", async function(e) {
+
+            e.preventDefault();
+
+
+            // Get values
             const name =
-                document.getElementById("name").value;
+                document.getElementById("name").value.trim();
 
             const phone =
-                document.getElementById("phone").value;
+                document.getElementById("phone").value.trim();
 
             const email =
-                document.getElementById("email").value;
+                document.getElementById("email").value.trim();
 
-            const userMessage =
-                document.getElementById("userMessage").value;
+            const message =
+                document.getElementById("userMessage").value.trim();
 
 
-            // Data to Google Sheet
-            const formData = {
+            // Check fields
+            if (!name || !phone || !email || !message) {
+
+                status.className = "error";
+
+                status.innerText =
+                    "❌ Please fill all fields.";
+
+                return;
+            }
+
+
+            // Loading
+            submitBtn.disabled = true;
+
+            submitBtn.innerText = "Submitting...";
+
+            status.className = "";
+
+            status.innerText = "";
+
+
+            // Data
+            const data = {
 
                 name: name,
 
@@ -199,76 +277,64 @@
 
                 email: email,
 
-                message: userMessage
+                message: message
 
             };
 
 
-            // Button loading
-            submitBtn.disabled = true;
+            try {
 
-            submitBtn.innerText = "Submitting...";
+                const response = await fetch(
+                    GOOGLE_SCRIPT_URL,
+                    {
+                        method: "POST",
 
-            message.innerHTML = "";
+                        body: JSON.stringify(data)
+                    }
+                );
 
 
-            // Send data
-            fetch(GOOGLE_SCRIPT_URL, {
+                const result = await response.json();
 
-                method: "POST",
 
-                body: JSON.stringify(formData)
+                if (result.status === "success") {
 
-            })
+                    status.className = "success";
 
-            .then(response => response.json())
+                    status.innerText =
+                        "✅ Submitted successfully!";
 
-            .then(data => {
-
-                if (data.status === "success") {
-
-                    message.className = "success";
-
-                    message.innerText =
-                        "✅ Form submitted successfully!";
-
-                    document
-                        .getElementById("contactForm")
-                        .reset();
+                    form.reset();
 
                 } else {
 
-                    message.className = "error";
+                    status.className = "error";
 
-                    message.innerText =
-                        "❌ Something went wrong.";
+                    status.innerText =
+                        "❌ Failed to save data.";
 
                 }
 
-            })
-
-            .catch(error => {
+            } catch (error) {
 
                 console.error(error);
 
-                message.className = "error";
+                status.className = "error";
 
-                message.innerText =
-                    "❌ Unable to submit form.";
+                status.innerText =
+                    "❌ Something went wrong. Please try again.";
 
-            })
+            }
 
-            .finally(() => {
 
-                submitBtn.disabled = false;
+            // Reset button
+            submitBtn.disabled = false;
 
-                submitBtn.innerText = "Submit";
-
-            });
+            submitBtn.innerText = "Submit";
 
         });
 
-</script>
+    </script>
 
 </body>
 </html>
