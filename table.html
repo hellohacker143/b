@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simple Bill - Rate × Quantity</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f4f5f7;margin:0;padding:20px;color:#222}
+.box{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 3px 15px #0001}
+h1{margin-top:0}.top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+input,button{padding:11px;border:1px solid #ccc;border-radius:7px;font-size:14px}button{cursor:pointer;font-weight:bold}
+.add{background:#087f3f;color:#fff}.download{background:#222;color:#fff}.whatsapp{background:#25d366;color:#fff}
+table{width:100%;border-collapse:collapse;margin-top:15px}th,td{border:1px solid #ddd;padding:9px}th{background:#eee}
+td input{width:100%;border:0;background:#fafafa}.amount{font-weight:bold;color:#087f3f}.remove{background:#e53935;color:#fff;padding:7px}
+.total{text-align:right;font-size:21px;font-weight:bold;margin:18px 0;border-top:2px solid #222;padding-top:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.preview{margin-top:25px;border-top:2px solid #222;padding-top:15px}
+.bill{max-width:600px;margin:auto;border:1px solid #ddd;padding:20px;background:#fff}.bill table{margin-top:15px}
+@media(max-width:600px){body{padding:10px}.top{grid-template-columns:1fr}table{font-size:12px}th,td{padding:6px}.actions button{width:100%}}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>🧾 Simple Bill Generator</h1>
+
+<div class="top">
+<input id="customer" placeholder="Customer Name">
+<input id="phone" placeholder="WhatsApp Number">
+<input id="date" type="date">
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Product Name</th>
+<th>Rate ₹</th>
+<th>Qty</th>
+<th>Amount ₹</th>
+<th>Remove</th>
+</tr>
+</thead>
+<tbody id="rows"></tbody>
+</table>
+
+<br>
+<button class="add" onclick="addRow()">+ Add Product</button>
+
+<div class="total">
+Total Amount: ₹<span id="total">0.00</span>
+</div>
+
+<div class="actions">
+<button class="download" onclick="downloadHTML()">⬇ Download HTML</button>
+<button class="whatsapp" onclick="sendWhatsApp()">📲 Send WhatsApp</button>
+<button onclick="showPreview()">👁 Preview</button>
+</div>
+
+<div class="preview" id="preview"></div>
+</div>
+
+<script>
+let products=[];
+
+document.getElementById("date").value=new Date().toISOString().split("T")[0];
+
+function addRow(){
+ products.push({name:"",rate:0,qty:1});
+ render();
+}
+
+function render(){
+ let html="";
+
+ products.forEach((p,i)=>{
+   let amount=(Number(p.rate)||0)*(Number(p.qty)||0);
+
+   html+=`
+   <tr>
+    <td>
+      <input
+        value="${p.name}"
+        placeholder="Product name"
+        oninput="products[${i}].name=this.value;update()">
+    </td>
+
+    <td>
+      <input
+        type="number"
+        min="0"
+        value="${p.rate}"
+        placeholder="0"
+        oninput="products[${i}].rate=this.value;update()">
+    </td>
+
+    <td>
+      <input
+        type="number"
+        min="1"
+        value="${p.qty}"
+        oninput="products[${i}].qty=this.value;update()">
+    </td>
+
+    <td class="amount" id="amount-${i}">
+      ₹${amount.toFixed(2)}
+    </td>
+
+    <td>
+      <button class="remove" onclick="removeRow(${i})">X</button>
+    </td>
+   </tr>`;
+ });
+
+ document.getElementById("rows").innerHTML=html;
+ update();
+}
+
+function update(){
+ let total=0;
+
+ products.forEach((p,i)=>{
+   let rate=Number(p.rate)||0;
+   let qty=Number(p.qty)||0;
+   let amount=rate*qty;
+
+   total+=amount;
+
+   let cell=document.getElementById("amount-"+i);
+
+   if(cell){
+     cell.textContent="₹"+amount.toFixed(2);
+   }
+ });
+
+ document.getElementById("total").textContent=total.toFixed(2);
+ showPreview();
+}
+
+function removeRow(i){
+ products.splice(i,1);
+ render();
+}
+
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,m=>({
+ "&":"&amp;",
+ "<":"&lt;",
+ ">":"&gt;",
+ '"':"&quot;",
+ "'":"&#039;"
+ }[m]));
+}
+
+function billHTML(){
+ let total=0;
+ let rows="";
+
+ products.forEach(p=>{
+   let rate=Number(p.rate)||0;
+   let qty=Number(p.qty)||0;
+   let amount=rate*qty;
+
+   total+=amount;
+
+   if(p.name || rate){
+     rows+=`
+     <tr>
+       <td>${escapeHTML(p.name||"Product")}</td>
+       <td>₹${rate.toFixed(2)}</td>
+       <td>${qty}</td>
+       <td>₹${amount.toFixed(2)}</td>
+     </tr>`;
+   }
+ });
+
+ return `
+ <div class="bill">
+   <h2 style="text-align:center">🧾 BILL</h2>
+
+   <p>
+     <b>Customer:</b>
+     ${escapeHTML(document.getElementById("customer").value)}
+   </p>
+
+   <p>
+     <b>WhatsApp:</b>
+     ${escapeHTML(document.getElementById("phone").value)}
+   </p>
+
+   <p>
+     <b>Date:</b>
+     ${document.getElementById("date").value}
+   </p>
+
+   <table>
+     <tr>
+       <th>Product</th>
+       <th>Rate</th>
+       <th>Qty</th>
+       <th>Amount</th>
+     </tr>
+     ${rows}
+   </table>
+
+   <h2 style="text-align:right">
+     Total: ₹${total.toFixed(2)}
+   </h2>
+ </div>`;
+}
+
+function showPreview(){
+ document.getElementById("preview").innerHTML=billHTML();
+}
+
+function downloadHTML(){
+
+ let content=`
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <meta charset="UTF-8">
+ <title>Bill</title>
+
+ <style>
+ body{font-family:Arial;padding:30px}
+ .bill{max-width:600px;margin:auto;border:1px solid #ddd;padding:20px}
+ table{width:100%;border-collapse:collapse}
+ th,td{border:1px solid #ddd;padding:10px}
+ th{background:#eee}
+ </style>
+
+ </head>
+
+ <body>
+ ${billHTML()}
+ </body>
+ </html>`;
+
+ let blob=new Blob(
+   [content],
+   {type:"text/html"}
+ );
+
+ let url=URL.createObjectURL(blob);
+
+ let a=document.createElement("a");
+ a.href=url;
+ a.download="bill.html";
+ a.click();
+
+ URL.revokeObjectURL(url);
+}
+
+function sendWhatsApp(){
+
+ let number=
+ document.getElementById("phone")
+ .value
+ .replace(/\D/g,"");
+
+ if(!number){
+   alert("Enter WhatsApp number first.");
+   return;
+ }
+
+ let total=0;
+
+ let message=
+ "*NEW BILL*\n\n"+
+ "Customer: "+
+ document.getElementById("customer").value+
+ "\nDate: "+
+ document.getElementById("date").value+
+ "\n\n";
+
+ products.forEach(p=>{
+
+   let rate=Number(p.rate)||0;
+   let qty=Number(p.qty)||0;
+   let amount=rate*qty;
+
+   if(p.name || rate){
+
+     total+=amount;
+
+     message+=
+     p.name+
+     " | Rate ₹"+
+     rate.toFixed(2)+
+     " | Qty "+
+     qty+
+     " | Amount ₹"+
+     amount.toFixed(2)+
+     "\n";
+   }
+
+ });
+
+ message+=
+ "\n*TOTAL AMOUNT: ₹"+
+ total.toFixed(2)+
+ "*";
+
+ let prefix=number.length===10?"91":"";
+
+ window.open(
+   "https://wa.me/"+
+   prefix+
+   number+
+   "?text="+
+   encodeURIComponent(message),
+   "_blank"
+ );
+}
+
+addRow();
+</script>
+</body>
+</html>
