@@ -1,340 +1,1542 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMart Daily - Grocery Store</title>
 
-    <title>Contact Form</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f6f7;
+  color:#222;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:70px;
+  background:white;
+  display:flex;
+  align-items:center;
+  padding:0 5%;
+  gap:25px;
+  box-shadow:0 2px 12px rgba(0,0,0,.1);
+}
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
-        }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#07883f;
+  font-size:22px;
+  font-weight:bold;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 8px;
-            color: #111827;
-        }
+.logo span{
+  font-size:32px;
+}
 
-        .subtitle {
-            text-align: center;
-            color: #6b7280;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
+.logo small{
+  display:block;
+  color:#777;
+  font-size:10px;
+  font-weight:normal;
+}
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+.location{
+  margin-left:auto;
+  color:#555;
+}
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: 600;
-            color: #374151;
-        }
+.cart-button{
+  border:0;
+  background:#07883f;
+  color:white;
+  padding:12px 18px;
+  border-radius:9px;
+  cursor:pointer;
+  font-weight:bold;
+}
 
-        input,
-        textarea {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            transition: 0.2s;
-        }
+/* HERO */
+.hero{
+  max-width:1200px;
+  margin:25px auto;
+  min-height:330px;
+  padding:50px;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(100deg,rgba(235,250,241,.96),rgba(255,255,255,.8)),
+    url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80");
+  background-size:cover;
+  background-position:center;
+}
 
-        input:focus,
-        textarea:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
-        }
+.hero-content{
+  max-width:550px;
+}
 
-        textarea {
-            height: 120px;
-            resize: vertical;
-        }
+.badge{
+  color:#07883f;
+  font-weight:bold;
+  letter-spacing:2px;
+  font-size:12px;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.hero h1{
+  font-size:45px;
+  margin:15px 0;
+  line-height:1.1;
+}
 
-        button:hover {
-            background: #1d4ed8;
-        }
+.hero h1 strong{
+  color:#07883f;
+}
 
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
+.hero p{
+  color:#666;
+  margin-bottom:20px;
+}
 
-        #status {
-            text-align: center;
-            margin-top: 18px;
-            font-size: 14px;
-            font-weight: 600;
-            min-height: 20px;
-        }
+.shop-btn{
+  display:inline-block;
+  text-decoration:none;
+  background:#07883f;
+  color:white;
+  padding:14px 24px;
+  border-radius:10px;
+  font-weight:bold;
+}
 
-        .success {
-            color: #16a34a;
-        }
+/* SEARCH */
+.toolbar{
+  max-width:1200px;
+  margin:20px auto;
+  display:flex;
+  gap:12px;
+}
 
-        .error {
-            color: #dc2626;
-        }
+.search{
+  flex:1;
+}
 
-        @media (max-width: 500px) {
-            .container {
-                padding: 22px;
-            }
-        }
-    </style>
+.search input,
+.category-select{
+  width:100%;
+  border:1px solid #ddd;
+  background:white;
+  padding:14px;
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
+}
+
+.category-select{
+  width:220px;
+}
+
+/* PRODUCTS */
+.products{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 0 80px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  border:1px solid #eee;
+  transition:.2s;
+}
+
+.product:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.product img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.product-body{
+  padding:15px;
+}
+
+.product-category{
+  font-size:11px;
+  color:#888;
+}
+
+.product h3{
+  font-size:16px;
+  margin:7px 0;
+  min-height:38px;
+}
+
+.price{
+  color:#07883f;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.old-price{
+  color:#999;
+  text-decoration:line-through;
+  font-size:12px;
+  margin-left:5px;
+}
+
+.add-button{
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  border:1px solid #07883f;
+  background:white;
+  color:#07883f;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.add-button:hover{
+  background:#07883f;
+  color:white;
+}
+
+/* CART OVERLAY */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:2000;
+}
+
+.overlay.active{
+  display:block;
+}
+
+/* CART */
+.cart{
+  position:fixed;
+  top:0;
+  right:-450px;
+  width:430px;
+  max-width:100%;
+  height:100vh;
+  background:white;
+  z-index:3000;
+  transition:.3s;
+  overflow-y:auto;
+  padding:20px;
+}
+
+.cart.active{
+  right:0;
+}
+
+.cart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.close{
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.cart-item{
+  display:flex;
+  gap:10px;
+  padding:13px 0;
+  border-bottom:1px solid #eee;
+}
+
+.cart-item img{
+  width:65px;
+  height:65px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.cart-info{
+  flex:1;
+}
+
+.cart-info h4{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
+
+.qty button{
+  width:27px;
+  height:27px;
+  border:1px solid #ddd;
+  background:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.bill{
+  margin-top:20px;
+  border-top:1px solid #ddd;
+  padding-top:15px;
+}
+
+.bill-row{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+  font-size:14px;
+}
+
+.total{
+  font-size:20px;
+  font-weight:bold;
+  padding-top:10px;
+  border-top:1px solid #ddd;
+}
+
+.checkout-button{
+  width:100%;
+  padding:15px;
+  background:#07883f;
+  color:white;
+  border:0;
+  border-radius:10px;
+  margin-top:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CHECKOUT MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:rgba(0,0,0,.7);
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.active{
+  display:flex;
+}
+
+.modal-box{
+  position:relative;
+  background:white;
+  width:450px;
+  max-width:100%;
+  border-radius:18px;
+  padding:25px;
+}
+
+.modal-box h2{
+  margin-bottom:15px;
+}
+
+.modal-box input,
+.modal-box textarea,
+.modal-box select{
+  width:100%;
+  padding:13px;
+  margin:7px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:14px;
+}
+
+.modal-box textarea{
+  height:90px;
+  resize:none;
+}
+
+.modal-close{
+  position:absolute;
+  right:15px;
+  top:15px;
+  border:0;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.checkout-total{
+  background:#eef8f2;
+  padding:15px;
+  margin-top:10px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* FLOATING WHATSAPP */
+.whatsapp{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:60px;
+  height:60px;
+  background:#25D366;
+  color:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  text-decoration:none;
+  z-index:1500;
+  box-shadow:0 5px 20px rgba(0,0,0,.3);
+}
+
+/* FOOTER */
+footer{
+  background:#222;
+  color:#aaa;
+  text-align:center;
+  padding:25px;
+  font-size:13px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+  .products{
+    grid-template-columns:repeat(3,1fr);
+    padding:10px 18px 70px;
+  }
+
+  .hero{
+    margin:15px;
+  }
+}
+
+@media(max-width:650px){
+
+  header{
+    height:62px;
+    padding:0 12px;
+    gap:8px;
+  }
+
+  .logo{
+    font-size:18px;
+  }
+
+  .logo span{
+    font-size:25px;
+  }
+
+  .location{
+    display:none;
+  }
+
+  .hero{
+    margin:0;
+    border-radius:0;
+    min-height:300px;
+    padding:30px 20px;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+  .toolbar{
+    margin:15px 12px;
+    display:block;
+  }
+
+  .category-select{
+    width:100%;
+    margin-top:10px;
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+    padding:5px 12px 70px;
+    gap:12px;
+  }
+
+  .product img{
+    height:145px;
+  }
+
+  .product-body{
+    padding:11px;
+  }
+
+  .product h3{
+    font-size:14px;
+  }
+
+  .cart{
+    width:100%;
+  }
+}
+
+@media(max-width:380px){
+
+  .products{
+    grid-template-columns:1fr;
+  }
+
+  .product img{
+    height:200px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
+<!-- HEADER -->
+<header>
 
-        <h1>Contact Form</h1>
+  <div class="logo">
+    <span>🛒</span>
 
-        <p class="subtitle">
-            Fill in the details and click Submit
-        </p>
+    <div>
+      DMart Daily
+      <small>Smart Grocery Shopping</small>
+    </div>
+  </div>
 
-        <form id="contactForm">
+  <div class="location">
+    📍 Hyderabad
+  </div>
 
-            <div class="form-group">
-                <label for="name">Name</label>
+  <button class="cart-button" onclick="openCart()">
+    🛒 Cart (<span id="cartCount">0</span>)
+  </button>
 
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter your name"
-                    required
-                >
+</header>
+
+
+<!-- HERO -->
+<section class="hero">
+
+  <div class="hero-content">
+
+    <span class="badge">
+      DAILY ESSENTIALS
+    </span>
+
+    <h1>
+      Everything you need,
+      <strong>at great prices.</strong>
+    </h1>
+
+    <p>
+      Shop groceries, snacks, beverages and household
+      essentials from your phone.
+    </p>
+
+    <a href="#products" class="shop-btn">
+      Shop Now ↓
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- SEARCH -->
+<section class="toolbar">
+
+  <div class="search">
+    <input
+      type="search"
+      id="search"
+      placeholder="🔍 Search products..."
+      oninput="displayProducts()"
+    >
+  </div>
+
+  <select
+    class="category-select"
+    id="category"
+    onchange="displayProducts()"
+  >
+
+    <option value="all">
+      All Categories
+    </option>
+
+    <option value="Groceries">
+      Groceries
+    </option>
+
+    <option value="Dairy">
+      Dairy
+    </option>
+
+    <option value="Beverages">
+      Beverages
+    </option>
+
+    <option value="Snacks">
+      Snacks
+    </option>
+
+    <option value="Household">
+      Household
+    </option>
+
+    <option value="Personal Care">
+      Personal Care
+    </option>
+
+  </select>
+
+</section>
+
+
+<!-- PRODUCTS -->
+<main class="products" id="products"></main>
+
+
+<!-- CART OVERLAY -->
+<div
+  class="overlay"
+  id="overlay"
+  onclick="closeCart()"
+></div>
+
+
+<!-- CART -->
+<aside class="cart" id="cart">
+
+  <div class="cart-header">
+
+    <h2>
+      Your Cart
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeCart()"
+    >
+      ✕
+    </button>
+
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div
+    class="bill"
+    id="bill"
+  ></div>
+
+  <button
+    class="checkout-button"
+    onclick="checkout()"
+  >
+    📲 Place Order
+  </button>
+
+</aside>
+
+
+<!-- CHECKOUT -->
+<div
+  class="modal"
+  id="modal"
+>
+
+  <div class="modal-box">
+
+    <button
+      class="modal-close"
+      onclick="closeCheckout()"
+    >
+      ✕
+    </button>
+
+    <h2>
+      Delivery Details
+    </h2>
+
+    <input
+      id="name"
+      type="text"
+      placeholder="Customer Name"
+    >
+
+    <input
+      id="phone"
+      type="tel"
+      placeholder="Mobile Number"
+    >
+
+    <textarea
+      id="address"
+      placeholder="Full Delivery Address"
+    ></textarea>
+
+    <select id="payment">
+
+      <option>
+        Cash on Delivery
+      </option>
+
+      <option>
+        UPI
+      </option>
+
+    </select>
+
+    <div
+      class="checkout-total"
+      id="checkoutTotal"
+    ></div>
+
+    <button
+      class="checkout-button"
+      onclick="sendWhatsApp()"
+    >
+      📲 Send Order on WhatsApp
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- FLOATING WHATSAPP -->
+<a
+  class="whatsapp"
+  href="https://wa.me/917660856536"
+  target="_blank"
+  title="WhatsApp 7660856536"
+>
+  ☎
+</a>
+
+
+<footer>
+  © 2026 DMart Daily • Grocery Shopping Demo
+</footer>
+
+
+<script>
+
+const products = [
+
+  {
+    id:1,
+    name:"Aashirvaad Atta 5 kg",
+    category:"Groceries",
+    price:285,
+    old:315,
+    image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:2,
+    name:"India Gate Basmati Rice 5 kg",
+    category:"Groceries",
+    price:499,
+    old:560,
+    image:"https://images.unsplash.com/photo-1536304993881-ff6e9e5e4c8a?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:3,
+    name:"Toor Dal 1 kg",
+    category:"Groceries",
+    price:165,
+    old:185,
+    image:"https://images.unsplash.com/photo-1515543904379-3d757afe72e4?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:4,
+    name:"Fortune Sunflower Oil 1 L",
+    category:"Groceries",
+    price:125,
+    old:145,
+    image:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:5,
+    name:"Amul Taaza Milk 1 L",
+    category:"Dairy",
+    price:68,
+    old:72,
+    image:"https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:6,
+    name:"Amul Butter 500 g",
+    category:"Dairy",
+    price:275,
+    old:295,
+    image:"https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:7,
+    name:"Milkmaid 380 g",
+    category:"Dairy",
+    price:145,
+    old:160,
+    image:"https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:8,
+    name:"Tata Tea 500 g",
+    category:"Beverages",
+    price:245,
+    old:270,
+    image:"https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:9,
+    name:"Nescafe Classic 100 g",
+    category:"Beverages",
+    price:295,
+    old:320,
+    image:"https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:10,
+    name:"Coca-Cola 750 ml",
+    category:"Beverages",
+    price:45,
+    old:50,
+    image:"https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:11,
+    name:"Lay's Magic Masala",
+    category:"Snacks",
+    price:20,
+    old:20,
+    image:"https://images.unsplash.com/photo-1621939514649-280e2aa12c2b?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:12,
+    name:"Kurkure Masala Munch",
+    category:"Snacks",
+    price:20,
+    old:20,
+    image:"https://images.unsplash.com/photo-1621447504864-d8686e12698c?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:13,
+    name:"Oreo Original 120 g",
+    category:"Snacks",
+    price:35,
+    old:40,
+    image:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:14,
+    name:"Surf Excel Matic 2 kg",
+    category:"Household",
+    price:325,
+    old:360,
+    image:"https://images.unsplash.com/photo-1585832770485-e68a5dbfad52?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:15,
+    name:"Vim Dishwash Liquid 750 ml",
+    category:"Household",
+    price:115,
+    old:130,
+    image:"https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:16,
+    name:"Harpic Toilet Cleaner 1 L",
+    category:"Household",
+    price:165,
+    old:185,
+    image:"https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:17,
+    name:"Dove Bath Soap 3 Pack",
+    category:"Personal Care",
+    price:145,
+    old:165,
+    image:"https://images.unsplash.com/photo-1607006344380-b6775a0824b7?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:18,
+    name:"Colgate MaxFresh 150 g",
+    category:"Personal Care",
+    price:105,
+    old:120,
+    image:"https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:19,
+    name:"Head & Shoulders Shampoo",
+    category:"Personal Care",
+    price:399,
+    old:450,
+    image:"https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80"
+  },
+
+  {
+    id:20,
+    name:"Parle-G Biscuits 800 g",
+    category:"Snacks",
+    price:80,
+    old:90,
+    image:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80"
+  }
+
+];
+
+
+/* CART */
+
+let cart =
+JSON.parse(
+localStorage.getItem("dmartCart")
+) || {};
+
+
+/* MONEY */
+
+function money(number){
+
+  return "₹" +
+  number.toLocaleString("en-IN");
+
+}
+
+
+/* DISPLAY PRODUCTS */
+
+function displayProducts(){
+
+  const search =
+  document
+  .getElementById("search")
+  .value
+  .toLowerCase();
+
+  const category =
+  document
+  .getElementById("category")
+  .value;
+
+  const filtered =
+  products.filter(product => {
+
+    const searchMatch =
+    product.name
+    .toLowerCase()
+    .includes(search);
+
+    const categoryMatch =
+    category === "all" ||
+    product.category === category;
+
+    return searchMatch &&
+           categoryMatch;
+
+  });
+
+
+  document.getElementById("products").innerHTML =
+
+  filtered.map(product => `
+
+    <article class="product">
+
+      <img
+        src="${product.image}"
+        alt="${product.name}"
+      >
+
+      <div class="product-body">
+
+        <div class="product-category">
+          ${product.category}
+        </div>
+
+        <h3>
+          ${product.name}
+        </h3>
+
+        <div class="price">
+
+          ${money(product.price)}
+
+          <span class="old-price">
+            ${money(product.old)}
+          </span>
+
+        </div>
+
+        <button
+          class="add-button"
+          onclick="addToCart(${product.id})"
+        >
+          + Add to Cart
+        </button>
+
+      </div>
+
+    </article>
+
+  `).join("");
+
+}
+
+
+/* ADD */
+
+function addToCart(id){
+
+  if(!cart[id]){
+    cart[id] = 0;
+  }
+
+  cart[id]++;
+
+  saveCart();
+
+  openCart();
+
+}
+
+
+/* SAVE */
+
+function saveCart(){
+
+  localStorage.setItem(
+    "dmartCart",
+    JSON.stringify(cart)
+  );
+
+  updateCartCount();
+
+}
+
+
+/* COUNT */
+
+function updateCartCount(){
+
+  const count =
+  Object.values(cart)
+  .reduce(
+    (total, quantity) =>
+    total + quantity,
+    0
+  );
+
+  document.getElementById(
+    "cartCount"
+  ).textContent = count;
+
+}
+
+
+/* TOTALS */
+
+function calculateTotals(){
+
+  let subtotal = 0;
+
+  Object.entries(cart)
+  .forEach(([id,quantity]) => {
+
+    const product =
+    products.find(
+      p => p.id == id
+    );
+
+    subtotal +=
+    product.price * quantity;
+
+  });
+
+
+  const delivery =
+  subtotal === 0
+  ? 0
+  : subtotal >= 499
+  ? 0
+  : 40;
+
+
+  const discount =
+  subtotal >= 999
+  ? Math.round(subtotal * 0.05)
+  : 0;
+
+
+  const taxable =
+  subtotal - discount;
+
+
+  const tax =
+  Math.round(taxable * 0.05);
+
+
+  const total =
+  subtotal +
+  delivery -
+  discount +
+  tax;
+
+
+  return {
+    subtotal,
+    delivery,
+    discount,
+    tax,
+    total
+  };
+
+}
+
+
+/* OPEN CART */
+
+function openCart(){
+
+  document
+  .getElementById("cart")
+  .classList.add("active");
+
+  document
+  .getElementById("overlay")
+  .classList.add("active");
+
+  displayCart();
+
+}
+
+
+/* CLOSE CART */
+
+function closeCart(){
+
+  document
+  .getElementById("cart")
+  .classList.remove("active");
+
+  document
+  .getElementById("overlay")
+  .classList.remove("active");
+
+}
+
+
+/* CART ITEMS */
+
+function displayCart(){
+
+  const container =
+  document.getElementById("cartItems");
+
+
+  const entries =
+  Object.entries(cart);
+
+
+  if(entries.length === 0){
+
+    container.innerHTML = `
+      <div style="
+        text-align:center;
+        padding:50px 10px;
+        color:#777;
+      ">
+        🛒<br><br>
+        Your cart is empty
+      </div>
+    `;
+
+  }else{
+
+    container.innerHTML =
+
+    entries.map(
+    ([id,quantity]) => {
+
+      const product =
+      products.find(
+        p => p.id == id
+      );
+
+
+      return `
+
+        <div class="cart-item">
+
+          <img
+            src="${product.image}"
+            alt="${product.name}"
+          >
+
+          <div class="cart-info">
+
+            <h4>
+              ${product.name}
+            </h4>
+
+            <div>
+              ${money(product.price)}
             </div>
 
+            <div class="qty">
 
-            <div class="form-group">
-                <label for="phone">Phone</label>
+              <button
+                onclick="changeQuantity(${id},-1)"
+              >
+                −
+              </button>
 
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="Enter your phone number"
-                    required
-                >
+              <b>
+                ${quantity}
+              </b>
+
+              <button
+                onclick="changeQuantity(${id},1)"
+              >
+                +
+              </button>
+
             </div>
 
+          </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
+        </div>
 
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    required
-                >
-            </div>
+      `;
+
+    }).join("");
+
+  }
 
 
-            <div class="form-group">
-                <label for="userMessage">Message</label>
+  displayBill();
 
-                <textarea
-                    id="userMessage"
-                    name="message"
-                    placeholder="Enter your message"
-                    required
-                ></textarea>
-            </div>
+}
 
 
-            <button type="submit" id="submitBtn">
-                Submit
-            </button>
+/* BILL */
 
-        </form>
+function displayBill(){
+
+  const t =
+  calculateTotals();
 
 
-        <div id="status"></div>
+  document.getElementById("bill").innerHTML = `
 
+    <div class="bill-row">
+      <span>Item Total</span>
+      <b>${money(t.subtotal)}</b>
     </div>
 
+    <div class="bill-row">
+      <span>Delivery Fee</span>
+      <b>
+        ${
+          t.delivery === 0
+          ? "FREE"
+          : money(t.delivery)
+        }
+      </b>
+    </div>
 
-    <script>
+    <div class="bill-row">
+      <span>Discount</span>
+      <b>
+        - ${money(t.discount)}
+      </b>
+    </div>
 
-        // ==========================================
-        // GOOGLE APPS SCRIPT WEB APP
-        // ==========================================
+    <div class="bill-row">
+      <span>GST / Tax</span>
+      <b>${money(t.tax)}</b>
+    </div>
 
-        const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyohP7_BrExXyxlhm952mdTUQbVmWRuLa3LNO-xqYVqU-NuU26zTa-PWflrUpgSl8DM/exec";
+    <div class="bill-row total">
+      <span>Total Bill</span>
+      <b>${money(t.total)}</b>
+    </div>
 
+  `;
 
-        // ==========================================
-        // FORM
-        // ==========================================
-
-        const form =
-            document.getElementById("contactForm");
-
-        const submitBtn =
-            document.getElementById("submitBtn");
-
-        const status =
-            document.getElementById("status");
-
-
-        // ==========================================
-        // SUBMIT
-        // ==========================================
-
-        form.addEventListener("submit", async function(e) {
-
-            e.preventDefault();
-
-
-            // Get values
-            const name =
-                document.getElementById("name").value.trim();
-
-            const phone =
-                document.getElementById("phone").value.trim();
-
-            const email =
-                document.getElementById("email").value.trim();
-
-            const message =
-                document.getElementById("userMessage").value.trim();
+}
 
 
-            // Check fields
-            if (!name || !phone || !email || !message) {
+/* QUANTITY */
 
-                status.className = "error";
+function changeQuantity(id,change){
 
-                status.innerText =
-                    "❌ Please fill all fields.";
-
-                return;
-            }
+  cart[id] =
+  (cart[id] || 0) +
+  change;
 
 
-            // Loading
-            submitBtn.disabled = true;
+  if(cart[id] <= 0){
 
-            submitBtn.innerText = "Submitting...";
+    delete cart[id];
 
-            status.className = "";
-
-            status.innerText = "";
+  }
 
 
-            // Data
-            const data = {
+  saveCart();
 
-                name: name,
+  displayCart();
 
-                phone: phone,
-
-                email: email,
-
-                message: message
-
-            };
+}
 
 
-            try {
+/* CHECKOUT */
 
-                const response = await fetch(
-                    GOOGLE_SCRIPT_URL,
-                    {
-                        method: "POST",
+function checkout(){
 
-                        body: JSON.stringify(data)
-                    }
-                );
+  if(
+    Object.keys(cart).length === 0
+  ){
 
+    alert(
+      "Please add products to cart."
+    );
 
-                const result = await response.json();
+    return;
 
-
-                if (result.status === "success") {
-
-                    status.className = "success";
-
-                    status.innerText =
-                        "✅ Submitted successfully!";
-
-                    form.reset();
-
-                } else {
-
-                    status.className = "error";
-
-                    status.innerText =
-                        "❌ Failed to save data.";
-
-                }
-
-            } catch (error) {
-
-                console.error(error);
-
-                status.className = "error";
-
-                status.innerText =
-                    "❌ Something went wrong. Please try again.";
-
-            }
+  }
 
 
-            // Reset button
-            submitBtn.disabled = false;
+  closeCart();
 
-            submitBtn.innerText = "Submit";
+  const t =
+  calculateTotals();
 
-        });
 
-    </script>
+  document.getElementById(
+    "checkoutTotal"
+  ).innerHTML =
+  "Total Bill: " +
+  money(t.total);
+
+
+  document
+  .getElementById("modal")
+  .classList.add("active");
+
+}
+
+
+/* CLOSE CHECKOUT */
+
+function closeCheckout(){
+
+  document
+  .getElementById("modal")
+  .classList.remove("active");
+
+}
+
+
+/* WHATSAPP ORDER */
+
+function sendWhatsApp(){
+
+  const name =
+  document
+  .getElementById("name")
+  .value
+  .trim();
+
+
+  const phone =
+  document
+  .getElementById("phone")
+  .value
+  .trim();
+
+
+  const address =
+  document
+  .getElementById("address")
+  .value
+  .trim();
+
+
+  const payment =
+  document
+  .getElementById("payment")
+  .value;
+
+
+  if(
+    !name ||
+    !phone ||
+    !address
+  ){
+
+    alert(
+      "Please enter name, mobile number and address."
+    );
+
+    return;
+
+  }
+
+
+  const t =
+  calculateTotals();
+
+
+  let itemText = "";
+
+
+  Object.entries(cart)
+  .forEach(
+  ([id,quantity]) => {
+
+    const product =
+    products.find(
+      p => p.id == id
+    );
+
+
+    itemText +=
+    "• " +
+    product.name +
+    " x " +
+    quantity +
+    " = " +
+    money(
+      product.price *
+      quantity
+    ) +
+    "\n";
+
+  });
+
+
+  const message =
+
+`NEW DMART DAILY ORDER
+
+Customer: ${name}
+
+Customer Mobile: ${phone}
+
+Delivery Address:
+${address}
+
+Payment:
+${payment}
+
+ITEMS:
+${itemText}
+
+BILL:
+
+Item Total: ${money(t.subtotal)}
+
+Delivery Fee: ${
+  t.delivery === 0
+  ? "FREE"
+  : money(t.delivery)
+}
+
+Discount: -${money(t.discount)}
+
+GST / Tax: ${money(t.tax)}
+
+TOTAL BILL: ${money(t.total)}
+
+Please confirm my order.`;
+
+
+  const whatsappURL =
+  "https://wa.me/917660856536?text=" +
+  encodeURIComponent(message);
+
+
+  window.open(
+    whatsappURL,
+    "_blank"
+  );
+
+
+  /*
+    Keep cart after WhatsApp opens.
+    If you want automatic cart clearing,
+    uncomment below.
+  */
+
+  // cart = {};
+  // saveCart();
+
+}
+
+
+/* INITIAL */
+
+displayProducts();
+
+updateCartCount();
+
+</script>
 
 </body>
 </html>
+```
