@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Form</title>
+</head>
+
+<body>
+
+  <h2>Enter Your Name</h2>
+
+  <form id="form">
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter name"
+      required
+    >
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("form").onsubmit = function(e) {
+
+      e.preventDefault();
+
+      var name = document.getElementById("name").value;
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          document.getElementById("result").innerText = response;
+          document.getElementById("form").reset();
+        })
+        .saveName(name);
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales Entry</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,.12);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-box">
+
+    <h2>Sales Entry</h2>
+
+    <form id="salesForm">
+
+        <label>Customer Name</label>
+        <input type="text" name="customerName" required>
+
+        <label>Product</label>
+        <input type="text" name="product" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" min="1" required>
+
+        <label>Amount</label>
+        <input type="number" name="amount" min="0" step="0.01" required>
+
+        <button type="submit">
+            Submit
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+</div>
+
+<script>
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+document.getElementById("salesForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const form = this;
+    const message = document.getElementById("message");
+
+    const formData = new FormData(form);
+
+    message.innerText = "Saving...";
+
+    try {
+
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+        });
+
+        message.innerText = "✅ Saved successfully!";
+
+        form.reset();
+
+    } catch (error) {
+
+        message.innerText = "❌ Something went wrong.";
+
+        console.error(error);
+    }
+
+});
+
+</script>
+
+</body>
+</html>
